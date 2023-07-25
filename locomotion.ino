@@ -12,8 +12,8 @@ const int lLocoPWM = 18;
 // int L2Pin2 = 26; 
 // int L2enable = 14; 
 
-const int lLocoDir = 17; 
-const int lLocoPWM = 16; 
+const int rLocoDir = 17; 
+const int rLocoPWM = 16; 
 
 // int R2Pin1 = 27; 
 // int R2Pin2 = 26; 
@@ -33,7 +33,7 @@ const int dutyCycle = 200;
 
 // ****** DEADZONE ******
 
-bool deadzone(int x) {
+int deadzone(int x) {
   if(abs(x) < 8)
     return 0;
   else if(x>=8)
@@ -44,7 +44,7 @@ bool deadzone(int x) {
 
 // ****** LOCOMOTION ******
 
-void variableInput(int x, int y) {
+void Locomotion(int x, int y) {
 
     // X AND Y will be outputs of deadzone function
 
@@ -119,7 +119,7 @@ void setup() {
 
   // PS4 Setup
 
-  PS4.begin("3c:a6:f6:21:ba:83");
+  PS4.begin("9c:b6:d0:90:37:c2");
   Serial.println("Ready.");
 
   // PWM Setup
@@ -127,26 +127,19 @@ void setup() {
   ledcAttachPin(lLocoPWM, lPWMchannel);
   ledcAttachPin(rLocoPWM, rPWMchannel);
 
-  ledcSetup(lPWMchannel, frequency, res);
-  ledcSetup(rPWMchannel, frequency, res);
+  ledcSetup(lPWMchannel, frequency, resolution);
+  ledcSetup(rPWMchannel, frequency, resolution);
 
  
   Serial.begin(115200);
 }
  
 void loop() {
- 
- 
+  int tx = deadzone(PS4.LStickX());
+  int ty = deadzone(PS4.LStickY());
+  int x = map()
+  Serial.printf("%d %d\n", x, y);
 }
 
-  // // Move DC motor forward with increasing speed
-  // digitalWrite(motor1Pin1, HIGH);
-  // digitalWrite(motor1Pin2, LOW);
-  // while (dutyCycle <= 255){
-  //   ledcWrite(pwmChannel, dutyCycle);   
-  //   Serial.print("Forward with duty cycle: ");
-  //   Serial.println(dutyCycle);
-  //   dutyCycle = dutyCycle + 5;
-  //   delay(500);
-  // }
-  // dutyCycle = 200;
+
+
